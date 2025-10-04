@@ -30,15 +30,21 @@ def get_face_embeddings(img_path):
 # 3️⃣ Préparer la base
 embeddings_list = []
 image_paths = []
-
 for filename in os.listdir(image_folder):
     if not filename.lower().endswith(('.png', '.jpg', '.jpeg')):
         continue
+
+    start_file = time.time()
     path = os.path.join(image_folder, filename)
+
     embeddings = get_face_embeddings(path)
+
     for emb in embeddings:
         embeddings_list.append(emb)
         image_paths.append(path)
+
+    print(f"{filename} traité en {time.time() - start_file:.2f}s, "
+          f"{len(embeddings)} visage(s) trouvé")
 
 embeddings_array = np.array(embeddings_list).astype('float32')
 print(f"Nombre de visages indexés : {len(embeddings_array)}")
